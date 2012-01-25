@@ -1,0 +1,118 @@
+/* General DOM elements */
+
+li {
+    list-style-type: none;
+}
+
+a,a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+h2 {
+    margin: 15px 0 0;
+    padding: 0;
+}
+
+h3 {
+    font-weight: normal;
+    font: normal 14px "Helvetica Neue", Verdana, Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+/* Fonts */
+
+#content {
+    font: normal 14px "Helvetica Neue", Verdana, Arial, sans-serif;
+    width: 800px;
+    margin: 0 auto;
+}
+
+.headline {
+    font: normal 1.7em Georgia, serif;
+}
+
+#panel,.entrypanel,#panel a {
+    font: normal 12px courier;
+    color: #f5f5f5;
+}
+
+/* User content */
+
+.body {
+    min-height: 80px;
+}
+
+.dummy {
+    font-style: italic;
+}
+
+.meta {
+    display: none;
+}
+
+/* Admin tools */
+
+#panel a,.entrypanel span {
+    cursor: pointer;
+    margin-top: 10px;
+    background-color: #d2691e;
+    padding: 3px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+#panel,.entrypanel {
+    margin-left: 595px;
+    margin-top: 9px;
+    position: absolute;
+    text-align: right;
+    z-index: 100;
+}
+
+#panel {
+    margin-left: 630px;
+    top: 24px;
+}
+
+.entrypanel {
+    width: 158px;
+    padding: 0;
+}
+
+span.message {
+    background-color: transparent;
+    color: #D2691E;
+    margin-left: 10px;
+    margin-top: -3px;
+    position: absolute;
+}
+
+.entrydata {
+    position: absolute;
+    margin-left: -158px;
+    width: 145px;
+    text-align: right;
+    color: darkGray;
+    font-style: italic;
+}
+
+.editOn {
+    background-color: #ffffe0;
+    color: #000000;
+    border: 1px dashed;
+    margin: 8px 0;
+    padding: 6px;
+}
+
+.greyedOut {
+    font-style: italic;
+    color: #d3d3d3;
+}
+
+span.alert {
+    background-color: red;
+}
+
+

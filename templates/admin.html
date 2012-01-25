@@ -1,0 +1,109 @@
+{% extends 'includes/base.html' %}
+
+{% block extrahead %}{{ block.super }}
+
+    <title>miniblog - admin</title>
+
+    <script type='text/javascript'>
+        $(document).ready(function () {
+            $('.update').toggle(function () {
+                $('.message').html('');
+                $(this).parent().siblings('.editable').attr('contentEditable', 'true').addClass('editOn');
+                $(this).html('save');
+                $(this).siblings('.message').html('');
+                $(this).siblings('.delete').hide().removeClass('alert');
+            }, function () {
+                $(this).parent().siblings('.editable').attr('contentEditable', 'false').removeClass('editOn');
+                $(this).html('edit');
+                $(this).siblings('.delete').show();
+
+                // send the stuff back as JSON
+                var jsonEntry = {
+                    "id":$(this).siblings('.id').html(),
+                    "headline":$(this).parent().siblings('.headline').html(),
+                    "body":$(this).parent().siblings('.body').html().replace(/\n/g, ''),
+                    "publishdate":$(this).parent().siblings('.publishdate')
+                };
+                $.ajax({
+                    url:"{% url entries.views.update %}",
+                    type:"POST",
+                    data:JSON.stringify(jsonEntry),
+                    dataType:"json",
+                    context:$(this).siblings('.message'),
+                    success:function () {
+                        $(this).html('entry saved');
+                    },
+                    error:function () {
+                        $(this).html('changes not saved! something went wrong');
+                    }
+                });
+
+            });
+
+            $('.delete').click(function () {
+                $('.message').html('');
+                $(this).siblings('.message').html('Are you sure? Click delete to confirm');
+                $(this).addClass('alert');
+                $(this).unbind('click');
+                $(this).click(function () {
+                    $.ajax({
+                        url:'{% url entries.views.delete %}',
+                        type:"POST",
+                        data:'{ "id": "' + $(this).siblings('.id').html() + '" }',
+                        dataType:"json",
+                        context:$(this).siblings('.message'),
+                        success:function () {
+                            $(this).html('entry deleted');
+                            $(this).parent().parent().remove();
+                        },
+                        error:function () {
+                            $(this).html('entry not deleted! something went wrong');
+                        }
+                    });
+                });
+            });
+
+            $('.publish').click(function () {
+                $('.message').html('');
+                var jsonEntry = {
+                    "id":$(this).siblings('.id').html(),
+                    "publish":true
+                };
+                $.ajax({
+                    url:'{% url entries.views.update %}',
+                    type:"POST",
+                    data:JSON.stringify(jsonEntry),
+                    dataType:"json",
+                    context:$(this),
+                    success:function () {
+                        if ($(this).html() == 'hide') {
+                            $(this).html('publish');
+                            $(this).parent().parent().addClass('greyedOut');
+                        }
+                        else {
+                            $(this).html('hide');
+                            $(this).parent().parent().removeClass('greyedOut');
+
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+
+{% endblock %}
+
+{% block TITLE %}miniblog - admin{% endblock %}
+
+{% block ADMINPANEL %}
+    <div id="panel"><a href="{% url logout %}" class="logout">logout</a> <a class="create" href="{% url entries.views.create %}">add blog entry</a></div>
+{% endblock %}
+
+{% block ADMINENTRYPANEL %}
+    {% if user.is_authenticated %}
+        <div class="entrypanel"><span class="meta id">{{ entry.id }}</span>
+            <span class="update">edit</span> <span class="delete">delete</span> <span class="publish">{% if not entry.publish %}publish{% else %}hide{% endif %}</span> <span class="message"></span>
+        </div>
+    {% endif %}
+{% endblock %}

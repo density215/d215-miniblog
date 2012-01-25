@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    {% block extrahead %}{{ block.super }}
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/base.css" type="text/css" media="screen">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    {% endblock %}
+</head>
+
+<body>
+    <h1>{% block TITLE %}{% endblock %}</h1>
+
+    <div id="content">
+
+        {% block ADMINPANEL %}{% endblock %}
+
+        {% for entry in ENTRIES %}
+            <ul>
+                <li{% if not entry.publish %} class='greyedOut'{% endif %} xmlns:dc="http://purl.org/dc/elements/1.1/">
+                    {% block ADMINENTRYPANEL %}{% endblock %}
+
+                    <h2 class="headline editable" property="dc:title">{{ entry.headline|safe }}</h2>
+                    <h3 class="entrydata">
+                        <span class='author' property="dc:creator">by {% if entry.author.first_name and entry.author.last_name %}{{ entry.author.first_name }} {{ entry.author.last_name }}{% else %}{{ entry.author }}{% endif %}</span><br/><span class='publishdate'>{{ entry.publishdate }}</span>
+                    </h3>
+
+                    <div class="body editable">
+                        {{ entry.body|safe|linebreaksbr }}
+                    </div>
+                </li>
+            </ul>
+        {% endfor %}
+
+    </div>
+
+</body>
+
+</html>
