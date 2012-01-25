@@ -31,6 +31,7 @@ h3 {
 
 .headline {
     font: normal 1.7em Georgia, serif;
+    width: 570px;
 }
 
 #panel,.entrypanel,#panel a {
@@ -82,11 +83,13 @@ h3 {
 }
 
 span.message {
+    position: absolute;
     background-color: transparent;
     color: #D2691E;
     margin-left: 10px;
     margin-top: -3px;
-    position: absolute;
+    width: 94px;
+    text-align: left;
 }
 
 .entrydata {
@@ -112,7 +115,8 @@ span.message {
 }
 
 span.alert {
-    background-color: red;
+    color: red;
+    text-decoration: underline;
 }
 
 

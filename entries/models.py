@@ -1,11 +1,9 @@
 from django.contrib.admin.sites import site
 from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.template import defaultfilters
 from django.utils.datetime_safe import date
 from unidecode import unidecode
-from django.forms import ModelForm
 
 class Entry(models.Model):
 
@@ -16,7 +14,7 @@ class Entry(models.Model):
     publish = models.BooleanField('Publish Blog entry',default=False )
 
     # Meta data
-    slug = models.SlugField(editable=False)
+    slug = models.SlugField(editable=False) # the future
     author = models.ForeignKey(User, editable=False)
     created = models.DateTimeField(editable=False,auto_now_add=True)
     updated = models.DateTimeField(editable=False,auto_now=True)

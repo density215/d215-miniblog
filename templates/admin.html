@@ -5,24 +5,25 @@
     <title>miniblog - admin</title>
 
     <script type='text/javascript'>
+
+        /* see entries.views for JSON info */
         $(document).ready(function () {
             $('.update').toggle(function () {
-                $('.message').html('');
+                $(this).siblings('.delete').hide();
+                $('.message').html('').unbind('click').removeClass('alert');
                 $(this).parent().siblings('.editable').attr('contentEditable', 'true').addClass('editOn');
                 $(this).html('save');
-                $(this).siblings('.message').html('');
-                $(this).siblings('.delete').hide().removeClass('alert');
             }, function () {
+                $('.message').html('').unbind('click').removeClass('alert');
                 $(this).parent().siblings('.editable').attr('contentEditable', 'false').removeClass('editOn');
                 $(this).html('edit');
                 $(this).siblings('.delete').show();
 
-                // send the stuff back as JSON
                 var jsonEntry = {
                     "id":$(this).siblings('.id').html(),
                     "headline":$(this).parent().siblings('.headline').html(),
                     "body":$(this).parent().siblings('.body').html().replace(/\n/g, ''),
-                    "publishdate":$(this).parent().siblings('.publishdate')
+                    "publishdate":$(this).parent().siblings('.publishdate').html()
                 };
                 $.ajax({
                     url:"{% url entries.views.update %}",
@@ -41,17 +42,15 @@
             });
 
             $('.delete').click(function () {
-                $('.message').html('');
-                $(this).siblings('.message').html('Are you sure? Click delete to confirm');
-                $(this).addClass('alert');
-                $(this).unbind('click');
-                $(this).click(function () {
+                $('.message').html('').removeClass('alert');
+                $(this).siblings('.message').html('Are you sure? Click here to confirm').addClass('alert');
+                $(this).siblings('.message').click(function () {
                     $.ajax({
                         url:'{% url entries.views.delete %}',
                         type:"POST",
                         data:'{ "id": "' + $(this).siblings('.id').html() + '" }',
                         dataType:"json",
-                        context:$(this).siblings('.message'),
+                        context:$(this),
                         success:function () {
                             $(this).html('entry deleted');
                             $(this).parent().parent().remove();
@@ -64,7 +63,7 @@
             });
 
             $('.publish').click(function () {
-                $('.message').html('');
+                $('.message').html('').unbind('click').removeClass('alert');
                 var jsonEntry = {
                     "id":$(this).siblings('.id').html(),
                     "publish":true

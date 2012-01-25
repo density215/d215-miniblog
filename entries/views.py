@@ -1,8 +1,21 @@
+"""
+CRUD events are either handled with ajax/JSON
+or with an simple URL call. JSON indexnames and Django dictionary keys
+should be the same!
+
+corresponding django views
+
+ javascript/css         django view
+.create              -> entries.views.create
+.update/.publish     -> entries.views.update
+.delete              -> entries.views.delete
+"""
+
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.utils import IntegrityError
-from django.http import HttpResponseServerError, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils import simplejson
@@ -19,6 +32,10 @@ def admin(request):
 
 @login_required
 def create(request):
+    """
+    New entry is created when this view is called.
+    Dummy placeholder headline and body can be configured here.
+    """
     newentry = Entry(headline='<span class="dummy">[Your headline here]</span>',body='<span class="dummy">[Your entry goes here]</span>',author=request.user)
     try:
         newentry.save()
